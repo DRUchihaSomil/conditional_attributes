@@ -1,5 +1,22 @@
 @custom-variant dark (&:is(.dark *));
 
+/* Force dropdown width to exactly 360px */
+.force-dropdown-width {
+  width: 360px !important;
+  max-width: 360px !important;
+  min-width: 360px !important;
+}
+
+.force-dropdown-content {
+  width: 100% !important;
+  max-width: 360px !important;
+}
+
+.force-dropdown-pills {
+  width: 100% !important;
+  max-width: 340px !important;
+}
+
 :root {
   --font-size: 16px;
   --background: #ffffff;

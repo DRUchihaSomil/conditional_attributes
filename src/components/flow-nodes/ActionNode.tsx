@@ -218,9 +218,9 @@ export function ActionNode({
                     }
                   </span>
                 </SelectTrigger>
-                <SelectContent className="w-[360px] max-w-[360px] min-w-[360px]">
-                  <div className="p-3 border-b w-full">
-                    <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto w-full max-w-[340px]">
+                <SelectContent className="force-dropdown-width">
+                  <div className="p-3 border-b force-dropdown-content">
+                    <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto force-dropdown-pills">
                       {allowedValues.map((value: string, index: number) => (
                         <Badge
                           key={index}
