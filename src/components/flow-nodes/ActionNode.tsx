@@ -211,25 +211,29 @@ export function ActionNode({
             </div>
 
             {allowedValues.length > 0 && (
-              <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto">
-                {allowedValues.slice(0, 3).map((value: string, index: number) => (
+              <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                {allowedValues.map((value: string, index: number) => (
                   <Badge
                     key={index}
                     variant="secondary"
-                    className="text-xs flex items-center gap-1 badge"
+                    className="text-xs flex items-center gap-1 badge max-w-[150px] group"
                   >
-                    {value.length > 12 ? `${value.slice(0, 12)}...` : value}
-                    <X
-                      className="h-2 w-2 cursor-pointer hover:text-destructive"
-                      onClick={() => removeAllowedValue(index)}
-                    />
+                    <span className="truncate">
+                      {value.length > 15 ? `${value.slice(0, 15)}...` : value}
+                    </span>
+                    <button
+                      type="button"
+                      className="h-2 w-2 cursor-pointer hover:text-destructive flex-shrink-0 p-0 bg-transparent border-0 rounded-sm hover:bg-red-100"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeAllowedValue(index);
+                      }}
+                    >
+                      <X className="h-2 w-2" />
+                    </button>
                   </Badge>
                 ))}
-                {allowedValues.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{allowedValues.length - 3}
-                  </Badge>
-                )}
               </div>
             )}
           </div>
