@@ -58,6 +58,15 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
   const lastConditionRef = useRef<Condition | null>(null);
   const updateTimeoutRef = useRef<NodeJS.Timeout>();
 
+  // Guard clause for null condition
+  if (!condition) {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        <p>No condition selected. Please create or select a condition to view its sentence format.</p>
+      </div>
+    );
+  }
+
   // Initialize only when condition actually changes (prevent loops)
   useEffect(() => {
     // Only update if condition actually changed (deep comparison on key properties)
@@ -385,7 +394,11 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   <span className="text-gray-500">and allowed options:</span>
                   <div className="mx-2">
                     {effect.allowed_values && effect.allowed_values.length > 0 ? (
-                      <Select>
+                      <Select onOpenChange={(open) => {
+                        if (!open) {
+                          setSearchTerm('');
+                        }
+                      }}>
                         <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
                           <SelectValue>
                             {effect.allowed_values.length === 1 
@@ -426,12 +439,12 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                               .map((field) => {
                                 const isSelected = effect.allowed_values?.includes(field.value);
                                 return (
-                                  <SelectItem 
-                                    key={field.value} 
-                                    value={field.value} 
-                                    className="flex items-center justify-between cursor-pointer"
-                                    onSelect={(e) => {
+                                  <div
+                                    key={field.value}
+                                    className="flex items-center justify-between px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
+                                    onClick={(e) => {
                                       e.preventDefault();
+                                      e.stopPropagation();
                                       if (isSelected) {
                                         const newValues = effect.allowed_values?.filter(v => v !== field.value) || [];
                                         updateEffect(effectIndex, { allowed_values: newValues });
@@ -445,7 +458,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                                     {isSelected && (
                                       <span className="text-green-500 text-xs">✓</span>
                                     )}
-                                  </SelectItem>
+                                  </div>
                                 );
                               })}
                           </div>
