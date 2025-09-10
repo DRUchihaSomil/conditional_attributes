@@ -16,6 +16,7 @@ import {
 import { Settings, Plus, X } from "lucide-react";
 import { NodeHeader } from "./NodeHeader";
 import { EnhancedHandle } from "./EnhancedHandle";
+import { getFieldOptions, hasPredefinedOptions } from "../../data/fieldOptions";
 
 const actionFields = [
   "custom_fields.issue_category_l1",
@@ -34,6 +35,7 @@ export function ActionNode({
 }) {
   const [newValue, setNewValue] = useState("");
   const [newDefaultValue, setNewDefaultValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const { setNodes } = useReactFlow();
 
   const updateField = (field: string) => {
@@ -64,27 +66,32 @@ export function ActionNode({
     );
   };
 
-  const addAllowedValue = () => {
-    if (newValue.trim()) {
+  const addAllowedValue = (value?: string) => {
+    const valueToAdd = value || newValue.trim();
+    if (valueToAdd) {
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === id) {
             const currentValues = node.data.allowedValues || [];
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                allowedValues: [
-                  ...currentValues,
-                  newValue.trim(),
-                ],
-              },
-            };
+            if (!currentValues.includes(valueToAdd)) {
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  allowedValues: [
+                    ...currentValues,
+                    valueToAdd,
+                  ],
+                },
+              };
+            }
           }
           return node;
         }),
       );
-      setNewValue("");
+      if (!value) {
+        setNewValue("");
+      }
     }
   };
 
@@ -197,43 +204,98 @@ export function ActionNode({
         <div>
           <Label className="text-xs">Allowed Values</Label>
           <div className="space-y-1">
-            <div className="flex gap-1">
-              <Input
-                value={newValue}
-                onChange={(e) => setNewValue(e.target.value)}
-                placeholder="Add value"
-                className="h-7 flex-1 text-xs"
-                onKeyPress={(e) => e.key === "Enter" && addAllowedValue()}
-              />
-              <Button size="sm" onClick={addAllowedValue} className="h-7 px-2">
-                <Plus className="h-3 w-3" />
-              </Button>
-            </div>
-
-            {allowedValues.length > 0 && (
-              <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                {allowedValues.map((value: string, index: number) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className="text-xs flex items-center gap-1 badge max-w-[150px] group"
-                  >
-                    <span className="truncate">
-                      {value.length > 15 ? `${value.slice(0, 15)}...` : value}
-                    </span>
-                    <button
-                      type="button"
-                      className="h-2 w-2 cursor-pointer hover:text-destructive flex-shrink-0 p-0 bg-transparent border-0 rounded-sm hover:bg-red-100"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        removeAllowedValue(index);
-                      }}
-                    >
-                      <X className="h-2 w-2" />
-                    </button>
-                  </Badge>
-                ))}
+            {hasPredefinedOptions(data.field || '') ? (
+              <Select onOpenChange={(open) => {
+                if (!open) {
+                  setSearchTerm('');
+                }
+              }}>
+                <SelectTrigger className="h-8 text-xs">
+                  <span className="text-xs">
+                    {allowedValues.length === 1 
+                      ? allowedValues[0]
+                      : `${allowedValues.length} options`
+                    }
+                  </span>
+                </SelectTrigger>
+                <SelectContent className="w-[360px] max-w-[360px]">
+                  <div className="p-3 border-b">
+                    <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto">
+                      {allowedValues.map((value: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="text-xs flex items-center gap-1 badge max-w-[150px] group"
+                        >
+                          <span className="truncate">{value}</span>
+                          <button
+                            type="button"
+                            className="h-2 w-2 cursor-pointer hover:text-destructive flex-shrink-0 p-0 bg-transparent border-0 rounded-sm hover:bg-red-100"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              removeAllowedValue(index);
+                            }}
+                          >
+                            <X className="h-2 w-2" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                    <Input
+                      placeholder="Search options..."
+                      className="w-full h-7 text-xs"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  <div className="max-h-60 overflow-y-auto">
+                    {(() => {
+                      const fieldOptions = getFieldOptions(data.field || '');
+                      if (fieldOptions.length === 0) {
+                        return (
+                          <div className="px-2 py-1.5 text-xs text-gray-500">
+                            No predefined options available for this field
+                          </div>
+                        );
+                      }
+                      
+                      return fieldOptions
+                        .filter(option => 
+                          option.toLowerCase().includes(searchTerm.toLowerCase())
+                        )
+                        .map((option) => {
+                          const isSelected = allowedValues.includes(option);
+                          return (
+                            <button
+                              key={option}
+                              type="button"
+                              className="w-full flex items-center justify-between px-2 py-1.5 text-xs cursor-pointer hover:bg-gray-100 text-left"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (isSelected) {
+                                  const index = allowedValues.indexOf(option);
+                                  removeAllowedValue(index);
+                                } else {
+                                  addAllowedValue(option);
+                                }
+                              }}
+                            >
+                              <span className="truncate">{option}</span>
+                              {isSelected && (
+                                <span className="text-green-500 text-xs flex-shrink-0">✓</span>
+                              )}
+                            </button>
+                          );
+                        });
+                    })()}
+                  </div>
+                </SelectContent>
+              </Select>
+            ) : (
+              <div className="text-xs text-gray-500">
+                No predefined options available for this field
               </div>
             )}
           </div>

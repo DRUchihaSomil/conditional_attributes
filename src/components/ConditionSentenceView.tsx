@@ -7,6 +7,7 @@ import { Badge } from './ui/badge';
 import { Switch } from './ui/switch';
 import { Plus, Trash2, X } from 'lucide-react';
 import { Condition, Effect } from '../types/condition';
+import { getFieldOptions, hasPredefinedOptions } from '../data/fieldOptions';
 
 interface SentenceCondition {
   id: string;
@@ -407,7 +408,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                             }
                           </span>
                         </SelectTrigger>
-                        <SelectContent className="w-80 max-w-sm">
+                        <SelectContent className="w-[360px] max-w-[360px]">
                           <div className="p-3 border-b">
                             <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto">
                               {effect.allowed_values.map((value, valueIndex) => (
@@ -435,37 +436,47 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                             />
                           </div>
                           <div className="max-h-60 overflow-y-auto">
-                            {TARGET_FIELDS
-                              .filter(field => 
-                                field.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                field.value.toLowerCase().includes(searchTerm.toLowerCase())
-                              )
-                              .map((field) => {
-                                const isSelected = effect.allowed_values?.includes(field.value);
+                            {(() => {
+                              const fieldOptions = getFieldOptions(effect.fields[0] || '');
+                              if (fieldOptions.length === 0) {
                                 return (
-                                  <button
-                                    key={field.value}
-                                    type="button"
-                                    className="w-full flex items-center justify-between px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100 text-left"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      if (isSelected) {
-                                        const newValues = effect.allowed_values?.filter(v => v !== field.value) || [];
-                                        updateEffect(effectIndex, { allowed_values: newValues });
-                                      } else {
-                                        const newValues = [...(effect.allowed_values || []), field.value];
-                                        updateEffect(effectIndex, { allowed_values: newValues });
-                                      }
-                                    }}
-                                  >
-                                    <span className="truncate">{field.label}</span>
-                                    {isSelected && (
-                                      <span className="text-green-500 text-xs flex-shrink-0">✓</span>
-                                    )}
-                                  </button>
+                                  <div className="px-2 py-1.5 text-sm text-gray-500">
+                                    No predefined options available for this field
+                                  </div>
                                 );
-                              })}
+                              }
+                              
+                              return fieldOptions
+                                .filter(option => 
+                                  option.toLowerCase().includes(searchTerm.toLowerCase())
+                                )
+                                .map((option) => {
+                                  const isSelected = effect.allowed_values?.includes(option);
+                                  return (
+                                    <button
+                                      key={option}
+                                      type="button"
+                                      className="w-full flex items-center justify-between px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100 text-left"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        if (isSelected) {
+                                          const newValues = effect.allowed_values?.filter(v => v !== option) || [];
+                                          updateEffect(effectIndex, { allowed_values: newValues });
+                                        } else {
+                                          const newValues = [...(effect.allowed_values || []), option];
+                                          updateEffect(effectIndex, { allowed_values: newValues });
+                                        }
+                                      }}
+                                    >
+                                      <span className="truncate">{option}</span>
+                                      {isSelected && (
+                                        <span className="text-green-500 text-xs flex-shrink-0">✓</span>
+                                      )}
+                                    </button>
+                                  );
+                                });
+                            })()}
                           </div>
                         </SelectContent>
                       </Select>
@@ -473,31 +484,6 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                       <span className="text-gray-400 text-lg">none</span>
                     )}
                   </div>
-                </div>
-                
-                <div className="flex gap-2 ml-4">
-                  <Input
-                    placeholder="Add allowed value"
-                    className="h-auto px-0 py-0 text-lg border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        addAllowedValue(effectIndex, e.currentTarget.value);
-                        e.currentTarget.value = '';
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-6 px-2 text-lg"
-                    onClick={(e) => {
-                      const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                      addAllowedValue(effectIndex, input.value);
-                      input.value = '';
-                    }}
-                  >
-                    Add
-                  </Button>
                 </div>
 
                 <div className="flex items-center text-lg leading-relaxed ml-4">
