@@ -223,67 +223,75 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
               )}
 
               {/* Fill-in-the-blank Sentence */}
-              <div className="flex items-center gap-1 text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
+              <div className="flex items-center text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
                 {sentence.logicalConnector && (
                   <>
-                    <Select
-                      value={sentence.logicalConnector}
-                      onValueChange={(value: 'AND' | 'OR') => 
-                        updateSentence(sentence.id, { logicalConnector: value })
-                      }
-                    >
-                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="AND">AND</SelectItem>
-                        <SelectItem value="OR">OR</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="mx-2">
+                      <Select
+                        value={sentence.logicalConnector}
+                        onValueChange={(value: 'AND' | 'OR') => 
+                          updateSentence(sentence.id, { logicalConnector: value })
+                        }
+                      >
+                        <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="AND">AND</SelectItem>
+                          <SelectItem value="OR">OR</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <span className="text-gray-500">then</span>
                   </>
                 )}
 
                 <span className="text-gray-500">If</span>
 
-                <Select
-                  value={sentence.field}
-                  onValueChange={(value) => updateSentence(sentence.id, { field: value })}
-                >
-                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                    <SelectValue placeholder="field" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {COMMON_FIELDS.map((field) => (
-                      <SelectItem key={field.value} value={field.value}>
-                        {field.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="mx-2">
+                  <Select
+                    value={sentence.field}
+                    onValueChange={(value) => updateSentence(sentence.id, { field: value })}
+                  >
+                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                      <SelectValue placeholder="field" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {COMMON_FIELDS.map((field) => (
+                        <SelectItem key={field.value} value={field.value}>
+                          {field.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Select
-                  value={sentence.operator}
-                  onValueChange={(value) => updateSentence(sentence.id, { operator: value })}
-                >
-                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {OPERATORS.map((op) => (
-                      <SelectItem key={op.value} value={op.value}>
-                        {op.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="mx-2">
+                  <Select
+                    value={sentence.operator}
+                    onValueChange={(value) => updateSentence(sentence.id, { operator: value })}
+                  >
+                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {OPERATORS.map((op) => (
+                        <SelectItem key={op.value} value={op.value}>
+                          {op.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Input
-                  value={sentence.value}
-                  onChange={(e) => updateSentence(sentence.id, { value: e.target.value })}
-                  placeholder="value"
-                  className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto"
-                />
+                <div className="mx-2">
+                  <Input
+                    value={sentence.value}
+                    onChange={(e) => updateSentence(sentence.id, { value: e.target.value })}
+                    placeholder="value"
+                    className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto"
+                  />
+                </div>
 
                 {sentences.length > 1 && (
                   <Button
@@ -319,25 +327,27 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
           {effects.map((effect, effectIndex) => (
             <div key={effectIndex} className="space-y-4 p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
+                <div className="flex items-center text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
                   <span className="text-gray-500">Then set</span>
-                  <Select
-                    value={effect.fields[0] || ''}
-                    onValueChange={(value) => updateEffect(effectIndex, { fields: [value] })}
-                  >
-                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                      <SelectValue placeholder="field" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TARGET_FIELDS.map((field) => (
-                        <SelectItem key={field.value} value={field.value}>
-                          {field.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="mx-2">
+                    <Select
+                      value={effect.fields[0] || ''}
+                      onValueChange={(value) => updateEffect(effectIndex, { fields: [value] })}
+                    >
+                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                        <SelectValue placeholder="field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {TARGET_FIELDS.map((field) => (
+                          <SelectItem key={field.value} value={field.value}>
+                            {field.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <span className="text-gray-500">to show</span>
-                  <div className="inline-flex items-center gap-1 px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500">
+                  <div className="mx-2 inline-flex items-center gap-1 px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500">
                     <Switch
                       checked={effect.show !== false}
                       onCheckedChange={(checked) => updateEffect(effectIndex, { show: checked })}
@@ -378,7 +388,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                 <div className="flex gap-2 ml-4">
                   <Input
                     placeholder="Add allowed value"
-                    className="h-auto px-0 py-0 text-sm border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[120px]"
+                    className="h-auto px-0 py-0 text-lg border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         addAllowedValue(effectIndex, e.currentTarget.value);
@@ -389,7 +399,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-6 px-2 text-xs"
+                    className="h-6 px-2 text-lg"
                     onClick={(e) => {
                       const input = e.currentTarget.previousElementSibling as HTMLInputElement;
                       addAllowedValue(effectIndex, input.value);
