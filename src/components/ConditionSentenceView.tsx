@@ -499,8 +499,8 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   <span className="text-gray-500">and default values:</span>
                   <div className="mx-2">
                     <Select
-                      value={effect.default_values?.[0] || ''}
-                      onValueChange={(value) => updateEffect(effectIndex, { default_values: value ? [value] : [] })}
+                      value={effect.default_values?.[0] || '__none__'}
+                      onValueChange={(value) => updateEffect(effectIndex, { default_values: value === '__none__' ? [] : [value] })}
                     >
                       <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
                         <SelectValue placeholder="none">
@@ -508,7 +508,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">none</SelectItem>
+                        <SelectItem value="__none__">none</SelectItem>
                         {effect.allowed_values?.map((value) => (
                           <SelectItem key={value} value={value}>
                             {value}
