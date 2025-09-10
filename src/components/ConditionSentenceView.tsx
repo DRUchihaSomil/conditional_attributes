@@ -206,32 +206,22 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Condition Sentences</CardTitle>
+      <Card className="gap-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle>Conditions</CardTitle>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={addSentence}
+            className="h-8"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Condition
+          </Button>
         </CardHeader>
         <CardContent className="space-y-6">
           {sentences.map((sentence, index) => (
             <div key={sentence.id} className="space-y-3 p-4 border border-gray-200 rounded-lg">
-              {/* Logical Connector */}
-              {sentence.logicalConnector && (
-                <div className="flex items-center gap-2 mb-2">
-                  <Select
-                    value={sentence.logicalConnector}
-                    onValueChange={(value: 'AND' | 'OR') => 
-                      updateSentence(sentence.id, { logicalConnector: value })
-                    }
-                  >
-                    <SelectTrigger className="w-20">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="AND">AND</SelectItem>
-                      <SelectItem value="OR">OR</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
 
               {/* Fill-in-the-blank Sentence */}
               <div className="flex items-center text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
@@ -253,7 +243,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         </SelectContent>
                       </Select>
                     </div>
-                    <span className="text-gray-500">then</span>
+                    
                   </>
                 )}
 
@@ -319,21 +309,22 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
             </div>
           ))}
 
-          <Button 
-            variant="outline" 
-            onClick={addSentence}
-            className="w-full"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Condition
-          </Button>
         </CardContent>
       </Card>
 
       {/* Effects Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Then Actions</CardTitle>
+      <Card className="gap-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle>Actions</CardTitle>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={addEffect}
+            className="h-8"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Action
+          </Button>
         </CardHeader>
         <CardContent className="space-y-6">
           {effects.map((effect, effectIndex) => (
@@ -377,22 +368,6 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                     <span className="text-lg">{effect.optional !== false ? 'optional' : 'required'}</span>
                   </div>
                   <span className="text-gray-500">with allowed options</span>
-                </div>
-                {effects.length > 1 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeEffect(effectIndex)}
-                    className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center text-lg leading-relaxed">
-                  <span className="text-gray-500">and allowed options:</span>
                   <div className="mx-2">
                     {effect.allowed_values && effect.allowed_values.length > 0 ? (
                       <Select onOpenChange={(open) => {
@@ -485,8 +460,12 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                     )}
                   </div>
                 </div>
+               
+              </div>
 
-                <div className="flex items-center text-lg leading-relaxed ml-4">
+
+              
+                <div className="flex items-center text-lg leading-relaxed">
                   <span className="text-gray-500">and default values:</span>
                   <div className="mx-2">
                     <Select
@@ -509,14 +488,10 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                     </Select>
                   </div>
                 </div>
-              </div>
+              
             </div>
           ))}
 
-          <Button variant="outline" onClick={addEffect} className="w-full">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Action
-          </Button>
         </CardContent>
       </Card>
     </div>
