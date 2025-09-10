@@ -300,6 +300,73 @@ export function ActionNode({
             )}
           </div>
         </div>
+
+        {/* Default Values */}
+        <div>
+          <Label className="text-xs">Default Values</Label>
+          <div className="space-y-1">
+            <Select
+              value={defaultValues[0] || '__none__'}
+              onValueChange={(value) => {
+                setNodes((nds) =>
+                  nds.map((node) => {
+                    if (node.id === id) {
+                      return {
+                        ...node,
+                        data: {
+                          ...node.data,
+                          defaultValues: value === '__none__' ? [] : [value],
+                        },
+                      };
+                    }
+                    return node;
+                  }),
+                );
+              }}
+            >
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="none">
+                  {defaultValues[0] || 'none'}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">none</SelectItem>
+                {allowedValues.map((value) => (
+                  <SelectItem key={value} value={value} className="text-xs">
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Optional/Mandatory Toggle */}
+        <div className="flex items-center space-x-2">
+          <Switch
+            id={`optional-${id}`}
+            checked={data.optional !== false}
+            onCheckedChange={(checked) => {
+              setNodes((nds) =>
+                nds.map((node) => {
+                  if (node.id === id) {
+                    return {
+                      ...node,
+                      data: {
+                        ...node.data,
+                        optional: checked,
+                      },
+                    };
+                  }
+                  return node;
+                }),
+              );
+            }}
+          />
+          <Label htmlFor={`optional-${id}`} className="text-xs">
+            {data.optional !== false ? 'Optional' : 'Mandatory'}
+          </Label>
+        </div>
       </CardContent>
       <EnhancedHandle type="target" position="left" nodeId={id} nodeType="action" />
     </Card>
