@@ -218,14 +218,14 @@ export function ActionNode({
                     }
                   </span>
                 </SelectTrigger>
-                <SelectContent className="w-[360px] max-w-[360px]">
-                  <div className="p-3 border-b">
-                    <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto">
+                <SelectContent className="w-[360px] max-w-[360px] min-w-[360px]">
+                  <div className="p-3 border-b w-full">
+                    <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto w-full max-w-[340px]">
                       {allowedValues.map((value: string, index: number) => (
                         <Badge
                           key={index}
                           variant="secondary"
-                          className="text-xs flex items-center gap-1 badge max-w-[150px] group"
+                          className="text-xs flex items-center gap-1 badge max-w-[140px] group flex-shrink-0"
                         >
                           <span className="truncate">{value}</span>
                           <button

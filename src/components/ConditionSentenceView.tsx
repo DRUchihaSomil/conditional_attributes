@@ -408,11 +408,11 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                             }
                           </span>
                         </SelectTrigger>
-                        <SelectContent className="w-[360px] max-w-[360px]">
-                          <div className="p-3 border-b">
-                            <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto">
+                        <SelectContent className="w-[360px] max-w-[360px] min-w-[360px]">
+                          <div className="p-3 border-b w-full">
+                            <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto w-full max-w-[340px]">
                               {effect.allowed_values.map((value, valueIndex) => (
-                                <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm max-w-[180px] group">
+                                <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm max-w-[160px] group flex-shrink-0">
                                   <span className="truncate">{value}</span>
                                   <button
                                     type="button"
