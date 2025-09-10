@@ -400,26 +400,30 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         }
                       }}>
                         <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                          <SelectValue>
+                          <SelectValue placeholder="none">
                             {effect.allowed_values.length === 1 
                               ? effect.allowed_values[0]
                               : `${effect.allowed_values.length} options`
                             }
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent className="w-80">
+                        <SelectContent className="w-96 max-w-md">
                           <div className="p-3 border-b">
-                            <div className="flex flex-wrap gap-1 mb-2">
+                            <div className="flex flex-wrap gap-1 mb-2 max-h-20 overflow-y-auto">
                               {effect.allowed_values.map((value, valueIndex) => (
-                                <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm">
-                                  {value}
-                                  <X 
-                                    className="h-3 w-3 cursor-pointer hover:text-red-500" 
+                                <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm max-w-full group">
+                                  <span className="truncate max-w-[200px]">{value}</span>
+                                  <button
+                                    type="button"
+                                    className="h-3 w-3 cursor-pointer hover:text-red-500 flex-shrink-0 p-0 bg-transparent border-0 rounded-sm hover:bg-red-100"
                                     onClick={(e) => {
+                                      e.preventDefault();
                                       e.stopPropagation();
                                       removeAllowedValue(effectIndex, valueIndex);
                                     }}
-                                  />
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
                                 </Badge>
                               ))}
                             </div>
@@ -439,9 +443,10 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                               .map((field) => {
                                 const isSelected = effect.allowed_values?.includes(field.value);
                                 return (
-                                  <div
+                                  <button
                                     key={field.value}
-                                    className="flex items-center justify-between px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
+                                    type="button"
+                                    className="w-full flex items-center justify-between px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100 text-left"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -454,11 +459,11 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                                       }
                                     }}
                                   >
-                                    <span>{field.label}</span>
+                                    <span className="truncate">{field.label}</span>
                                     {isSelected && (
-                                      <span className="text-green-500 text-xs">✓</span>
+                                      <span className="text-green-500 text-xs flex-shrink-0">✓</span>
                                     )}
-                                  </div>
+                                  </button>
                                 );
                               })}
                           </div>
