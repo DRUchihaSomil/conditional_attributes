@@ -223,7 +223,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
               )}
 
               {/* Fill-in-the-blank Sentence */}
-              <div className="flex items-center gap-1 flex-wrap text-lg leading-relaxed">
+              <div className="flex items-center gap-1 text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
                 {sentence.logicalConnector && (
                   <>
                     <Select
@@ -232,7 +232,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         updateSentence(sentence.id, { logicalConnector: value })
                       }
                     >
-                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[40px] max-w-[60px] [&>svg]:w-3 [&>svg]:h-3">
+                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[30px] max-w-[50px] [&>svg]:w-3 [&>svg]:h-3">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -250,7 +250,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   value={sentence.field}
                   onValueChange={(value) => updateSentence(sentence.id, { field: value })}
                 >
-                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[60px] max-w-[120px] [&>svg]:w-3 [&>svg]:h-3">
+                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[50px] max-w-[100px] [&>svg]:w-3 [&>svg]:h-3">
                     <SelectValue placeholder="field" />
                   </SelectTrigger>
                   <SelectContent>
@@ -266,7 +266,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   value={sentence.operator}
                   onValueChange={(value) => updateSentence(sentence.id, { operator: value })}
                 >
-                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[60px] max-w-[100px] [&>svg]:w-3 [&>svg]:h-3">
+                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[50px] max-w-[80px] [&>svg]:w-3 [&>svg]:h-3">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -282,7 +282,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   value={sentence.value}
                   onChange={(e) => updateSentence(sentence.id, { value: e.target.value })}
                   placeholder="value"
-                  className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[80px] max-w-[150px]"
+                  className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[60px] max-w-[120px]"
                 />
 
                 {sentences.length > 1 && (
@@ -319,13 +319,13 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
           {effects.map((effect, effectIndex) => (
             <div key={effectIndex} className="space-y-4 p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-lg leading-relaxed">
+                <div className="flex items-center gap-1 text-lg leading-relaxed whitespace-nowrap overflow-x-auto">
                   <span className="text-gray-500">Then set</span>
                   <Select
                     value={effect.fields[0] || ''}
                     onValueChange={(value) => updateEffect(effectIndex, { fields: [value] })}
                   >
-                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[80px] max-w-[150px] [&>svg]:w-3 [&>svg]:h-3">
+                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 min-w-[60px] max-w-[120px] [&>svg]:w-3 [&>svg]:h-3">
                       <SelectValue placeholder="field" />
                     </SelectTrigger>
                     <SelectContent>
