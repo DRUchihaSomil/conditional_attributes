@@ -1,0 +1,505 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Enhanced Handle Styles */
+.enhanced-handle-container {
+  position: relative;
+  z-index: 10;
+}
+
+.enhanced-handle-plus {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.enhanced-handle-plus:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+/* Node Type Dropdown Styles */
+.node-type-dropdown {
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Ghost Node Animation */
+@keyframes ghost-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes ghost-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+
+.ghost-node {
+  animation: ghost-pulse 2s ease-in-out infinite, ghost-float 1.5s ease-in-out infinite;
+  pointer-events: none;
+  border: 2px dashed rgba(59, 130, 246, 0.6) !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.ghost-node * {
+  opacity: 0.7;
+}
+
+/* React Flow Production Fixes */
+.react-flow {
+  background: var(--background) !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.react-flow__viewport {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.react-flow__container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.react-flow__node {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* CRITICAL: Edge/Connection Fixes for Production */
+.react-flow__edge {
+  pointer-events: all !important;
+  z-index: 2 !important;
+}
+
+.react-flow__edge path {
+  stroke: #94a3b8 !important;
+  stroke-width: 1.5 !important;
+  fill: none !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 5 !important;
+  animation: dashdraw 0.5s linear infinite !important;
+}
+
+.react-flow__edge.selected path {
+  stroke: #3b82f6 !important;
+  stroke-width: 2 !important;
+}
+
+.react-flow__edge:hover path {
+  stroke: #3b82f6 !important;
+  stroke-width: 2 !important;
+}
+
+/* Connection line while dragging */
+.react-flow__connection {
+  stroke: #3b82f6 !important;
+  stroke-width: 1.5 !important;
+  fill: none !important;
+  pointer-events: none !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.react-flow__connection path {
+  stroke: #3b82f6 !important;
+  stroke-width: 1.5 !important;
+  fill: none !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+/* Handle styles for connections */
+.react-flow__handle {
+  width: 10px !important;
+  height: 10px !important;
+  background: #fff !important;
+  border: 2px solid #64748b !important;
+  border-radius: 50% !important;
+  pointer-events: all !important;
+  z-index: 10 !important;
+}
+
+.react-flow__handle-connecting {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+.react-flow__handle:hover {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Connection validation */
+.react-flow__handle-valid {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+.react-flow__handle-invalid {
+  background: #ef4444 !important;
+  border-color: #ef4444 !important;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* CRITICAL: Ensure SVG elements render properly */
+.react-flow svg {
+  overflow: visible !important;
+}
+
+.react-flow__edge path,
+.react-flow__connectionline path,
+.react-flow__connection path {
+  stroke: #94a3b8 !important;
+  stroke-width: 1.5 !important;
+  fill: none !important;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+/* Edge markers - Minimal and modern styling */
+.react-flow__arrowhead {
+  fill: #94a3b8 !important;
+  stroke: #94a3b8 !important;
+  stroke-width: 1 !important;
+}
+
+.react-flow__edge.selected .react-flow__arrowhead {
+  fill: #3b82f6 !important;
+  stroke: #3b82f6 !important;
+}
+
+.react-flow__edge:hover .react-flow__arrowhead {
+  fill: #3b82f6 !important;
+  stroke: #3b82f6 !important;
+}
+
+/* Connection line styles */
+.react-flow__connectionline {
+  z-index: 1001 !important;
+  pointer-events: none !important;
+}
+
+.react-flow__connectionline path {
+  stroke: #3b82f6 !important;
+  stroke-width: 1.5 !important;
+  stroke-dasharray: 4, 4 !important;
+  animation: dashdraw 0.5s linear infinite !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+/* Ensure React Flow initializes properly */
+.react-flow__renderer {
+  z-index: 1 !important;
+}
+
+.react-flow__controls {
+  z-index: 100 !important;
+}
+
+.react-flow__minimap {
+  z-index: 100 !important;
+}
+
+/* Ensure nodes are above edges */
+.react-flow__nodes {
+  z-index: 3 !important;
+}
+
+.react-flow__edges {
+  z-index: 2 !important;
+}
+
+/* Ensure selection box is visible */
+.react-flow__selection {
+  z-index: 4 !important;
+}
+
+/* Fix for production build issues */
+.react-flow__pane {
+  cursor: default;
+}
+
+.react-flow__pane.selection {
+  cursor: pointer;
+}
+
+.react-flow__pane.connecting {
+  cursor: crosshair;
+}
+
+/* Custom Node Styling Fixes */
+.react-flow__node-trigger,
+.react-flow__node-operator,
+.react-flow__node-value,
+.react-flow__node-action,
+.react-flow__node-logical {
+  max-width: 280px;
+  min-width: 160px;
+  width: auto;
+  font-size: 14px;
+}
+
+.react-flow__node-trigger .card {
+  border-width: 2px;
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.react-flow__node-operator .card {
+  border-width: 2px;
+  border-color: #f59e0b;
+  background-color: #fffbeb;
+}
+
+.react-flow__node-value .card {
+  border-width: 2px;
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.react-flow__node-action .card {
+  border-width: 2px;
+  border-color: #8b5cf6;
+  background-color: #faf5ff;
+}
+
+.react-flow__node-logical .card {
+  border-width: 2px;
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Ensure proper text sizing in nodes */
+.react-flow__node h1,
+.react-flow__node h2, 
+.react-flow__node h3,
+.react-flow__node h4,
+.react-flow__node p,
+.react-flow__node label,
+.react-flow__node button,
+.react-flow__node input {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+.react-flow__node .text-xs {
+  font-size: 12px !important;
+}
+
+.react-flow__node .text-sm {
+  font-size: 14px !important;
+}
+
+/* Fix badge sizing in nodes */
+.react-flow__node .badge {
+  font-size: 12px !important;
+  padding: 2px 6px !important;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
