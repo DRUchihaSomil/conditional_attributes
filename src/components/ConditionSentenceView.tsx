@@ -346,14 +346,23 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                       </SelectContent>
                     </Select>
                   </div>
-                  <span className="text-gray-500">to show</span>
+                  <span className="text-gray-500">to</span>
                   <div className="mx-2 inline-flex items-center gap-1 px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500">
                     <Switch
                       checked={effect.show !== false}
                       onCheckedChange={(checked) => updateEffect(effectIndex, { show: checked })}
                       className="scale-75"
                     />
-                    <span className="text-lg">optional</span>
+                    <span className="text-lg">{effect.show !== false ? 'show' : 'hidden'}</span>
+                  </div>
+                  <span className="text-gray-500">as</span>
+                  <div className="mx-2 inline-flex items-center gap-1 px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500">
+                    <Switch
+                      checked={effect.optional !== false}
+                      onCheckedChange={(checked) => updateEffect(effectIndex, { optional: checked } as Partial<Effect>)}
+                      className="scale-75"
+                    />
+                    <span className="text-lg">{effect.optional !== false ? 'optional' : 'required'}</span>
                   </div>
                   <span className="text-gray-500">with allowed options</span>
                 </div>
@@ -370,19 +379,38 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-1 text-lg leading-relaxed">
+                <div className="flex items-center text-lg leading-relaxed">
                   <span className="text-gray-500">and allowed options:</span>
-                </div>
-                <div className="flex flex-wrap gap-2 ml-4">
-                  {(effect.allowed_values || []).map((value, valueIndex) => (
-                    <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm border-0 border-b border-gray-300 bg-transparent rounded-none hover:bg-gray-50">
-                      {value}
-                      <X 
-                        className="h-3 w-3 cursor-pointer hover:text-red-500" 
-                        onClick={() => removeAllowedValue(effectIndex, valueIndex)}
-                      />
-                    </Badge>
-                  ))}
+                  <div className="mx-2">
+                    {effect.allowed_values && effect.allowed_values.length > 0 ? (
+                      <Select>
+                        <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                          <SelectValue>
+                            {effect.allowed_values.length === 1 
+                              ? effect.allowed_values[0]
+                              : `${effect.allowed_values.length} options`
+                            }
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {effect.allowed_values.map((value, valueIndex) => (
+                            <SelectItem key={valueIndex} value={value} className="flex items-center justify-between">
+                              <span>{value}</span>
+                              <X 
+                                className="h-3 w-3 cursor-pointer hover:text-red-500 ml-2" 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeAllowedValue(effectIndex, valueIndex);
+                                }}
+                              />
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <span className="text-gray-400 text-lg">none</span>
+                    )}
+                  </div>
                 </div>
                 
                 <div className="flex gap-2 ml-4">
@@ -410,23 +438,39 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-1 text-lg leading-relaxed ml-4">
+                <div className="flex items-center text-lg leading-relaxed ml-4">
                   <span className="text-gray-500">and default values:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {(effect.default_values || []).map((value, valueIndex) => (
-                      <Badge key={valueIndex} variant="outline" className="gap-1 px-1 py-0 text-xs border-0 border-b border-gray-300 bg-transparent rounded-none">
-                        {value}
-                        <X 
-                          className="h-3 w-3 cursor-pointer hover:text-red-500" 
-                          onClick={() => {
-                            const newValues = [...(effect.default_values || [])];
-                            newValues.splice(valueIndex, 1);
-                            updateEffect(effectIndex, { default_values: newValues });
-                          }}
-                        />
-                      </Badge>
-                    ))}
-                    <span className="text-xs text-gray-500">+{Math.max(0, 9 - (effect.default_values || []).length)} more</span>
+                  <div className="mx-2">
+                    {effect.default_values && effect.default_values.length > 0 ? (
+                      <Select>
+                        <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                          <SelectValue>
+                            {effect.default_values.length === 1 
+                              ? effect.default_values[0]
+                              : `${effect.default_values.length} options`
+                            }
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {effect.default_values.map((value, valueIndex) => (
+                            <SelectItem key={valueIndex} value={value} className="flex items-center justify-between">
+                              <span>{value}</span>
+                              <X 
+                                className="h-3 w-3 cursor-pointer hover:text-red-500 ml-2" 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const newValues = [...(effect.default_values || [])];
+                                  newValues.splice(valueIndex, 1);
+                                  updateEffect(effectIndex, { default_values: newValues });
+                                }}
+                              />
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <span className="text-gray-400 text-lg">none</span>
+                    )}
                   </div>
                 </div>
               </div>

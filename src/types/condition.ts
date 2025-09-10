@@ -2,6 +2,7 @@ export interface Effect {
   allowed_values: string[];
   fields: string[];
   show: boolean;
+  optional?: boolean;
   default_values?: string[];
   mandatory?: boolean;
 }
