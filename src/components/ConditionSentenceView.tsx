@@ -54,6 +54,7 @@ const TARGET_FIELDS = [
 export function ConditionSentenceView({ condition, onConditionChange }: ConditionSentenceViewProps) {
   const [sentences, setSentences] = useState<SentenceCondition[]>([]);
   const [effects, setEffects] = useState<Effect[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const lastConditionRef = useRef<Condition | null>(null);
   const updateTimeoutRef = useRef<NodeJS.Timeout>();
 
@@ -289,7 +290,8 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                     value={sentence.value}
                     onChange={(e) => updateSentence(sentence.id, { value: e.target.value })}
                     placeholder="value"
-                    className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto"
+                    className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto text-lg"
+                    style={{ fontSize: '1.125rem' }}
                   />
                 </div>
 
@@ -392,19 +394,61 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                             }
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent>
-                          {effect.allowed_values.map((value, valueIndex) => (
-                            <SelectItem key={valueIndex} value={value} className="flex items-center justify-between">
-                              <span>{value}</span>
-                              <X 
-                                className="h-3 w-3 cursor-pointer hover:text-red-500 ml-2" 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  removeAllowedValue(effectIndex, valueIndex);
-                                }}
-                              />
-                            </SelectItem>
-                          ))}
+                        <SelectContent className="w-80">
+                          <div className="p-3 border-b">
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {effect.allowed_values.map((value, valueIndex) => (
+                                <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm">
+                                  {value}
+                                  <X 
+                                    className="h-3 w-3 cursor-pointer hover:text-red-500" 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      removeAllowedValue(effectIndex, valueIndex);
+                                    }}
+                                  />
+                                </Badge>
+                              ))}
+                            </div>
+                            <Input
+                              placeholder="Search options..."
+                              className="w-full"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
+                          <div className="max-h-60 overflow-y-auto">
+                            {TARGET_FIELDS
+                              .filter(field => 
+                                field.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                field.value.toLowerCase().includes(searchTerm.toLowerCase())
+                              )
+                              .map((field) => {
+                                const isSelected = effect.allowed_values?.includes(field.value);
+                                return (
+                                  <SelectItem 
+                                    key={field.value} 
+                                    value={field.value} 
+                                    className="flex items-center justify-between cursor-pointer"
+                                    onSelect={(e) => {
+                                      e.preventDefault();
+                                      if (isSelected) {
+                                        const newValues = effect.allowed_values?.filter(v => v !== field.value) || [];
+                                        updateEffect(effectIndex, { allowed_values: newValues });
+                                      } else {
+                                        const newValues = [...(effect.allowed_values || []), field.value];
+                                        updateEffect(effectIndex, { allowed_values: newValues });
+                                      }
+                                    }}
+                                  >
+                                    <span>{field.label}</span>
+                                    {isSelected && (
+                                      <span className="text-green-500 text-xs">✓</span>
+                                    )}
+                                  </SelectItem>
+                                );
+                              })}
+                          </div>
                         </SelectContent>
                       </Select>
                     ) : (
@@ -441,36 +485,24 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                 <div className="flex items-center text-lg leading-relaxed ml-4">
                   <span className="text-gray-500">and default values:</span>
                   <div className="mx-2">
-                    {effect.default_values && effect.default_values.length > 0 ? (
-                      <Select>
-                        <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
-                          <SelectValue>
-                            {effect.default_values.length === 1 
-                              ? effect.default_values[0]
-                              : `${effect.default_values.length} options`
-                            }
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {effect.default_values.map((value, valueIndex) => (
-                            <SelectItem key={valueIndex} value={value} className="flex items-center justify-between">
-                              <span>{value}</span>
-                              <X 
-                                className="h-3 w-3 cursor-pointer hover:text-red-500 ml-2" 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const newValues = [...(effect.default_values || [])];
-                                  newValues.splice(valueIndex, 1);
-                                  updateEffect(effectIndex, { default_values: newValues });
-                                }}
-                              />
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <span className="text-gray-400 text-lg">none</span>
-                    )}
+                    <Select
+                      value={effect.default_values?.[0] || ''}
+                      onValueChange={(value) => updateEffect(effectIndex, { default_values: value ? [value] : [] })}
+                    >
+                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-lg font-normal border-0 border-b border-gray-300 bg-transparent rounded-none hover:border-gray-500 focus:ring-0 focus:border-gray-700 w-auto [&>svg]:w-3 [&>svg]:h-3">
+                        <SelectValue placeholder="none">
+                          {effect.default_values?.[0] || 'none'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">none</SelectItem>
+                        {effect.allowed_values?.map((value) => (
+                          <SelectItem key={value} value={value}>
+                            {value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>
