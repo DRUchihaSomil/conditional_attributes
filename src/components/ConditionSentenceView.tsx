@@ -201,7 +201,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
         </CardHeader>
         <CardContent className="space-y-6">
           {sentences.map((sentence, index) => (
-            <div key={sentence.id} className="space-y-3 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <div key={sentence.id} className="space-y-3 p-4 border border-gray-200 rounded-lg">
               {/* Logical Connector */}
               {sentence.logicalConnector && (
                 <div className="flex items-center gap-2 mb-2">
@@ -223,7 +223,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
               )}
 
               {/* Fill-in-the-blank Sentence */}
-              <div className="flex items-center gap-2 flex-wrap text-base leading-relaxed">
+              <div className="flex items-center gap-1 flex-wrap text-base leading-relaxed">
                 {sentence.logicalConnector && (
                   <>
                     <Select
@@ -232,7 +232,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         updateSentence(sentence.id, { logicalConnector: value })
                       }
                     >
-                      <SelectTrigger className="inline-flex h-8 w-16 px-2 text-base font-medium border-dashed border-2 border-blue-300 bg-blue-50 rounded-md hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                      <SelectTrigger className="inline-flex h-auto px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[40px] max-w-[60px]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -240,17 +240,17 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                         <SelectItem value="OR">OR</SelectItem>
                       </SelectContent>
                     </Select>
-                    <span className="text-gray-600">then</span>
+                    <span className="text-gray-700">then</span>
                   </>
                 )}
 
-                <span className="text-gray-600">If</span>
+                <span className="text-gray-700">If</span>
 
                 <Select
                   value={sentence.field}
                   onValueChange={(value) => updateSentence(sentence.id, { field: value })}
                 >
-                  <SelectTrigger className="inline-flex h-8 px-3 text-base font-medium border-dashed border-2 border-blue-300 bg-blue-50 rounded-md hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[120px] max-w-[200px]">
+                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[80px] max-w-[150px]">
                     <SelectValue placeholder="field" />
                   </SelectTrigger>
                   <SelectContent>
@@ -266,7 +266,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   value={sentence.operator}
                   onValueChange={(value) => updateSentence(sentence.id, { operator: value })}
                 >
-                  <SelectTrigger className="inline-flex h-8 px-3 text-base font-medium border-dashed border-2 border-blue-300 bg-blue-50 rounded-md hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[100px] max-w-[180px]">
+                  <SelectTrigger className="inline-flex h-auto px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[60px] max-w-[120px]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -282,7 +282,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   value={sentence.value}
                   onChange={(e) => updateSentence(sentence.id, { value: e.target.value })}
                   placeholder="value"
-                  className="inline-flex h-8 px-3 text-base font-medium border-dashed border-2 border-blue-300 bg-blue-50 rounded-md hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[100px] max-w-[200px]"
+                  className="inline-flex h-auto px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[60px] max-w-[150px]"
                 />
 
                 {sentences.length > 1 && (
@@ -290,9 +290,9 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                     variant="ghost"
                     size="sm"
                     onClick={() => removeSentence(sentence.id)}
-                    className="ml-2 h-8 w-8 p-0 text-gray-400 hover:text-red-500"
+                    className="ml-2 h-6 w-6 p-0 text-gray-400 hover:text-red-500"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3 w-3" />
                   </Button>
                 )}
               </div>
@@ -317,15 +317,15 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
         </CardHeader>
         <CardContent className="space-y-6">
           {effects.map((effect, effectIndex) => (
-            <div key={effectIndex} className="space-y-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div key={effectIndex} className="space-y-4 p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-base leading-relaxed">
-                  <span className="text-gray-600">Then set</span>
+                <div className="flex items-center gap-1 text-base leading-relaxed">
+                  <span className="text-gray-700">Then set</span>
                   <Select
                     value={effect.fields[0] || ''}
                     onValueChange={(value) => updateEffect(effectIndex, { fields: [value] })}
                   >
-                    <SelectTrigger className="inline-flex h-8 px-3 text-base font-medium border-dashed border-2 border-green-300 bg-green-50 rounded-md hover:bg-green-100 focus:ring-2 focus:ring-green-500 focus:border-green-500 min-w-[120px] max-w-[200px]">
+                    <SelectTrigger className="inline-flex h-auto px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[80px] max-w-[150px]">
                       <SelectValue placeholder="field" />
                     </SelectTrigger>
                     <SelectContent>
@@ -336,16 +336,16 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                       ))}
                     </SelectContent>
                   </Select>
-                  <span className="text-gray-600">to show</span>
-                  <div className="inline-flex items-center gap-1 px-2 py-1 text-sm font-medium border-dashed border-2 border-green-300 bg-green-50 rounded-md">
+                  <span className="text-gray-700">to show</span>
+                  <div className="inline-flex items-center gap-1 px-0 py-0 text-base font-normal border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600">
                     <Switch
                       checked={effect.show !== false}
                       onCheckedChange={(checked) => updateEffect(effectIndex, { show: checked })}
                       className="scale-75"
                     />
-                    <span className="text-xs">optional</span>
+                    <span className="text-sm">optional</span>
                   </div>
-                  <span className="text-gray-600">with allowed options</span>
+                  <span className="text-gray-700">with allowed options</span>
                 </div>
                 {effects.length > 1 && (
                   <Button
@@ -360,12 +360,12 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-base leading-relaxed">
-                  <span className="text-gray-600">and allowed options:</span>
+                <div className="flex items-center gap-1 text-base leading-relaxed">
+                  <span className="text-gray-700">and allowed options:</span>
                 </div>
                 <div className="flex flex-wrap gap-2 ml-4">
                   {(effect.allowed_values || []).map((value, valueIndex) => (
-                    <Badge key={valueIndex} variant="secondary" className="gap-1 px-3 py-1 text-sm border-dashed border border-gray-300 bg-gray-50 hover:bg-gray-100">
+                    <Badge key={valueIndex} variant="secondary" className="gap-1 px-2 py-1 text-sm border-0 border-b border-dashed border-gray-300 bg-transparent rounded-none hover:bg-gray-50">
                       {value}
                       <X 
                         className="h-3 w-3 cursor-pointer hover:text-red-500" 
@@ -378,7 +378,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                 <div className="flex gap-2 ml-4">
                   <Input
                     placeholder="Add allowed value"
-                    className="h-8 px-3 text-sm border-dashed border-2 border-gray-300 bg-gray-50 rounded-md hover:bg-gray-100 focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                    className="h-auto px-0 py-0 text-sm border-0 border-b-2 border-dashed border-gray-400 bg-transparent rounded-none hover:border-gray-600 focus:ring-0 focus:border-gray-800 min-w-[120px]"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         addAllowedValue(effectIndex, e.currentTarget.value);
@@ -389,7 +389,7 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 px-3"
+                    className="h-6 px-2 text-xs"
                     onClick={(e) => {
                       const input = e.currentTarget.previousElementSibling as HTMLInputElement;
                       addAllowedValue(effectIndex, input.value);
@@ -400,11 +400,11 @@ export function ConditionSentenceView({ condition, onConditionChange }: Conditio
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-2 text-base leading-relaxed ml-4">
-                  <span className="text-gray-600">and default values:</span>
+                <div className="flex items-center gap-1 text-base leading-relaxed ml-4">
+                  <span className="text-gray-700">and default values:</span>
                   <div className="flex flex-wrap gap-2">
                     {(effect.default_values || []).map((value, valueIndex) => (
-                      <Badge key={valueIndex} variant="outline" className="gap-1 px-2 py-1 text-xs border-dashed border border-purple-300 bg-purple-50">
+                      <Badge key={valueIndex} variant="outline" className="gap-1 px-1 py-0 text-xs border-0 border-b border-dashed border-gray-300 bg-transparent rounded-none">
                         {value}
                         <X 
                           className="h-3 w-3 cursor-pointer hover:text-red-500" 
