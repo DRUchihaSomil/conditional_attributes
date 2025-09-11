@@ -79,7 +79,21 @@ export function ConditionEditor({ condition, onSave, onBack }: ConditionEditorPr
         const defaultFlow = createDefaultFlow();
         setNodes(defaultFlow.nodes);
         setEdges(defaultFlow.edges);
-        setCurrentCondition(null);
+        // Create a default condition for sentence view
+        const defaultCondition: Condition = {
+          id: Date.now().toString(),
+          name: 'Untitled',
+          expression: '',
+          effects: [{
+            allowed_values: [],
+            fields: ['custom_fields.issue_category_l1'],
+            show: true,
+            default_values: [],
+            mandatory: false,
+          }],
+          expression_ast: []
+        };
+        setCurrentCondition(defaultCondition);
       }
     };
 
@@ -234,38 +248,53 @@ export function ConditionEditor({ condition, onSave, onBack }: ConditionEditorPr
               <Button variant="outline" size="sm" onClick={onBack}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="condition-name">Condition Name:</Label>
-                <Input
-                  id="condition-name"
-                  value={conditionName}
-                  onChange={(e) => setConditionName(e.target.value)}
-                  placeholder="Enter condition name"
-                  className="w-64"
-                />
-              </div>
-              
-              {/* View Mode Toggle */}
-              <div className="flex items-center gap-2 ml-6 pl-6 border-l">
-                <div className="flex items-center gap-2">
-                  <Workflow className="h-4 w-4" />
-                  <Label htmlFor="view-mode-toggle" className="text-sm font-medium">
-                    Canvas
-                  </Label>
-                </div>
-                <Switch
-                  id="view-mode-toggle"
-                  checked={viewMode === 'sentence'}
-                  onCheckedChange={handleViewModeChange}
-                />
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="view-mode-toggle" className="text-sm font-medium">
-                    Sentence
-                  </Label>
-                  <FileText className="h-4 w-4" />
-                </div>
-              </div>
+              <Input
+                value={conditionName}
+                onChange={(e) => setConditionName(e.target.value)}
+                placeholder="Untitled"
+                className="w-64 text-lg font-medium border-0 bg-transparent focus:ring-0 focus:border-b-2 focus:border-blue-500 rounded-none px-0"
+              />
             </div>
+            
+            {/* Centered View Mode Tabs */}
+            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('canvas')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  viewMode === 'canvas'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Workflow className="h-4 w-4" />
+                Canvas
+              </button>
+              <button
+                onClick={() => {
+                  // When switching to sentence view, update current condition from canvas
+                  const expression = generateExpressionFromFlow(nodes, edges);
+                  const effects = generateEffectsFromFlow(nodes);
+                  const updatedCondition: Condition = {
+                    id: condition?.id || Date.now().toString(),
+                    name: conditionName,
+                    expression,
+                    effects,
+                    expression_ast: [],
+                  };
+                  setCurrentCondition(updatedCondition);
+                  setViewMode('sentence');
+                }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  viewMode === 'sentence'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <FileText className="h-4 w-4" />
+                Sentence
+              </button>
+            </div>
+            
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={handleTest}>
                 <Play className="h-4 w-4 mr-2" />

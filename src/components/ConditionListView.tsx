@@ -145,11 +145,12 @@ export function ConditionListView({
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-semibold">Conditions</h1>
+                <h1 className="text-2xl font-semibold">If Conditions</h1>
               </div>
               <Button 
                 onClick={onCreateCondition} 
-                className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
+                className="flex items-center gap-2 bg-bblack text-white hover:bg-black/10 shadow-md border-0"
+                style={{ backgroundColor: '#000000', color: 'white' }}
               >
                 <Plus className="h-4 w-4" />
                 Add Condition

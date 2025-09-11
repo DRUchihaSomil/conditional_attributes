@@ -667,7 +667,7 @@ export default function App() {
     } else {
       setConditions(prev => [...prev, { ...condition, id: Date.now().toString() }]);
     }
-    setCurrentView('dashboard');
+    setCurrentView('list');
     setEditingCondition(null);
   };
 
