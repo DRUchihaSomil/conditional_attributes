@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ConditionDashboard } from './components/ConditionDashboard';
+import { ConditionListView } from './components/ConditionListView';
 import { ConditionEditor } from './components/ConditionEditor';
 import { Condition } from './types/condition';
 
@@ -643,7 +644,7 @@ const sampleConditions: Condition[] = [
 
 export default function App() {
   const [conditions, setConditions] = useState<Condition[]>(sampleConditions);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'editor'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'list' | 'editor'>('list');
   const [editingCondition, setEditingCondition] = useState<Condition | null>(null);
 
   const handleCreateCondition = () => {
@@ -671,7 +672,7 @@ export default function App() {
   };
 
   const handleBackToDashboard = () => {
-    setCurrentView('dashboard');
+    setCurrentView('list');
     setEditingCondition(null);
   };
 
@@ -679,6 +680,13 @@ export default function App() {
     <div className="size-full">
       {currentView === 'dashboard' ? (
         <ConditionDashboard
+          conditions={conditions}
+          onCreateCondition={handleCreateCondition}
+          onEditCondition={handleEditCondition}
+          onDeleteCondition={handleDeleteCondition}
+        />
+      ) : currentView === 'list' ? (
+        <ConditionListView
           conditions={conditions}
           onCreateCondition={handleCreateCondition}
           onEditCondition={handleEditCondition}
